@@ -40,13 +40,23 @@ export async function callOpenRouter<T>(options: CallAIOptions): Promise<T> {
 }
 
 function parseAIResponse<T>(content: string): T {
+    if (!content) {
+        throw new Error("AI returned empty content");
+    }
+
     try {
         return JSON.parse(content);
     } catch {
         const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
         if (jsonMatch) {
-            return JSON.parse(jsonMatch[1].trim());
+            try {
+                return JSON.parse(jsonMatch[1].trim());
+            } catch (err) {
+                console.error("Failed to parse extracted JSON block:", jsonMatch[1]);
+                throw new Error("Could not parse extracted JSON block");
+            }
         }
+        console.error("AI Response could not be parsed as JSON. Content:", content);
         throw new Error("Could not parse AI response as JSON");
     }
 }

@@ -149,9 +149,11 @@ export const handleGenerateResume = async (req: Request, res: Response): Promise
             return;
         }
 
+        const resumeObj = resume.toObject();
+
         const generatedResume = await generateImprovedResume(
-            resume.rawText,
-            resume.analysis
+            resumeObj.rawText,
+            resumeObj.analysis
         );
 
         res.json(generatedResume);
