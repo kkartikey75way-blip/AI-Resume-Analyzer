@@ -61,6 +61,19 @@ export interface IGeneratedResume {
     }[];
 }
 
+export interface ICareerRoadmap {
+    currentRole: string;
+    nextSteps: {
+        title: string;
+        timeframe: string;
+        description: string;
+        requiredSkills: string[];
+        recommendedCertifications: string[];
+    }[];
+    longTermGoal: string;
+    skillsToDevelop: string[];
+}
+
 export interface OpenRouterResponse {
     choices: {
         message: {

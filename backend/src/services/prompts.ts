@@ -140,3 +140,28 @@ Guidelines:
 - Make it ATS-optimized with relevant industry keywords
 - If information for a field is not available, use a reasonable placeholder or empty string
 - Keep certifications and projects as empty arrays if none exist in the original`;
+
+export const careerRoadmapPrompt = `You are a senior career strategist.Based on the user's current resume and experience, provide a strategic career growth roadmap for the next 2-5 years.
+
+You MUST respond with ONLY valid JSON(no markdown, no code fences, no explanation outside JSON).Use this exact structure:
+
+{
+    "currentRole": "<best title for their current level>",
+        "nextSteps": [
+            {
+                "title": "<next job title / promotion>",
+                "timeframe": "<e.g. 6-12 months>",
+                "description": "<strategic advice for reaching this step>",
+                "requiredSkills": ["skill1", "skill2"],
+                "recommendedCertifications": ["cert1", "cert2"]
+            }
+        ],
+            "longTermGoal": "<ambitious 3-5 year goal>",
+                "skillsToDevelop": ["skill1", "skill2", "skill3"]
+}
+
+Guidelines:
+- Be realistic yet ambitious.
+- Tailor the certifications and skills to their specific industry(e.g., if they are a developer, suggest AWS / Azure, System Design, etc.).
+- Focus on upward mobility(individual contributor to lead, or mid to senior level).
+- Ensure the JSON is valid and follows the structure exactly.`;

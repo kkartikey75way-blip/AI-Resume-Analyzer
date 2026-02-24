@@ -1,18 +1,14 @@
-// Resume route handlers — extracted from route definitions for cleaner code
+
 import { Request, Response } from "express";
 import { PDFParse } from "pdf-parse";
 import { resumeTextSchema } from "../validators/schemas.js";
 import Resume from "../models/Resume.js";
-import { analyzeResume, generateImprovedResume } from "../services/ai.service.js";
+import { analyzeResume, generateImprovedResume, generateCareerRoadmap } from "../services/ai.service.js";
 
 interface ResumeError {
     message: string;
 }
 
-/**
- * POST /api/resume/analyze
- * Analyze a resume from PDF upload or pasted text.
- */
 export const handleAnalyze = async (req: Request, res: Response): Promise<void> => {
     try {
         let resumeText = "";
@@ -70,10 +66,6 @@ export const handleAnalyze = async (req: Request, res: Response): Promise<void> 
     }
 };
 
-/**
- * GET /api/resume/history
- * Get all analyses for the authenticated user.
- */
 export const handleGetHistory = async (req: Request, res: Response): Promise<void> => {
     try {
         const resumes = await Resume.find({ user: req.user!._id })
@@ -87,10 +79,6 @@ export const handleGetHistory = async (req: Request, res: Response): Promise<voi
     }
 };
 
-/**
- * GET /api/resume/:id
- * Get a single analysis by ID.
- */
 export const handleGetAnalysis = async (req: Request, res: Response): Promise<void> => {
     try {
         const resume = await Resume.findOne({
@@ -110,10 +98,6 @@ export const handleGetAnalysis = async (req: Request, res: Response): Promise<vo
     }
 };
 
-/**
- * DELETE /api/resume/:id
- * Delete a single analysis by ID.
- */
 export const handleDeleteAnalysis = async (req: Request, res: Response): Promise<void> => {
     try {
         const resume = await Resume.findOneAndDelete({
@@ -133,10 +117,6 @@ export const handleDeleteAnalysis = async (req: Request, res: Response): Promise
     }
 };
 
-/**
- * POST /api/resume/:id/generate
- * Generate an improved resume based on analysis feedback.
- */
 export const handleGenerateResume = async (req: Request, res: Response): Promise<void> => {
     try {
         const resume = await Resume.findOne({
@@ -165,3 +145,32 @@ export const handleGenerateResume = async (req: Request, res: Response): Promise
         });
     }
 };
+
+/**
+ * POST /api/resume/:id/roadmap
+ * Generate a career roadmap based on the resume.
+ */
+export const handleGenerateRoadmap = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const resume = await Resume.findOne({
+            _id: req.params.id,
+            user: req.user!._id,
+        });
+
+        if (!resume) {
+            res.status(404).json({ message: "Analysis not found" });
+            return;
+        }
+
+        const roadmap = await generateCareerRoadmap(resume.rawText);
+
+        res.json(roadmap);
+    } catch (error: unknown) {
+        const err = error as ResumeError;
+        console.error("Roadmap generation error:", err.message);
+        res.status(500).json({
+            message: err.message || "Failed to generate career roadmap",
+        });
+    }
+};
+

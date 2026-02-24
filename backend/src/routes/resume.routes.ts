@@ -8,6 +8,7 @@ import {
     handleGetAnalysis,
     handleDeleteAnalysis,
     handleGenerateResume,
+    handleGenerateRoadmap,
 } from "../controllers/resume.controller.js";
 
 const router = express.Router();
@@ -29,5 +30,6 @@ router.get("/history", protect, handleGetHistory);
 router.get("/:id", protect, handleGetAnalysis);
 router.delete("/:id", protect, handleDeleteAnalysis);
 router.post("/:id/generate", protect, handleGenerateResume);
+router.post("/:id/roadmap", protect, handleGenerateRoadmap);
 
 export default router;

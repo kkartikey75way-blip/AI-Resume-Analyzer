@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import UploadResume from './pages/UploadResume';
 import AnalysisResult from './pages/AnalysisResult';
 import GeneratedResumePage from './pages/GeneratedResume';
+import CareerRoadmap from './pages/CareerRoadmap';
 
 function App() {
     return (
@@ -59,6 +60,7 @@ function App() {
                         <Route path="history" element={<Dashboard />} />
                         <Route path="analysis/:id" element={<AnalysisResult />} />
                         <Route path="analysis/:id/generated" element={<GeneratedResumePage />} />
+                        <Route path="analysis/:id/roadmap" element={<CareerRoadmap />} />
                     </Route>
 
                     {/* Catch all */}

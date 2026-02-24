@@ -42,6 +42,7 @@ export const resumeAPI = {
     getAnalysis: (id: string) => api.get(`/resume/${id}`),
     deleteAnalysis: (id: string) => api.delete(`/resume/${id}`),
     generateResume: (id: string) => api.post(`/resume/${id}/generate`),
+    generateRoadmap: (id: string) => api.post(`/resume/${id}/roadmap`),
 };
 
 export default api;

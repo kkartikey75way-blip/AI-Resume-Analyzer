@@ -1,8 +1,10 @@
-import type { IAnalysisResult, IGeneratedResume } from "../types/ai.types.js";
+// AI service — resume analysis and generation
+import type { IAnalysisResult, IGeneratedResume, ICareerRoadmap } from "../types/ai.types.js";
 import { callOpenRouter, getAIErrorMessage } from "./openrouter.js";
-import { analyzeResumePrompt, generateResumePrompt } from "./prompts.js";
+import { analyzeResumePrompt, generateResumePrompt, careerRoadmapPrompt } from "./prompts.js";
 
-export type { IAnalysisResult, IGeneratedResume };
+// Re-export types for consumers
+export type { IAnalysisResult, IGeneratedResume, ICareerRoadmap };
 
 export const analyzeResume = async (
   resumeText: string
@@ -68,3 +70,27 @@ export const generateImprovedResume = async (
     throw new Error(getAIErrorMessage(error, "Resume generation failed"));
   }
 };
+
+/**
+ * Generate a career roadmap from resume text.
+ */
+export const generateCareerRoadmap = async (
+  resumeText: string
+): Promise<ICareerRoadmap> => {
+  try {
+    return await callOpenRouter<ICareerRoadmap>({
+      messages: [
+        { role: "system", content: careerRoadmapPrompt },
+        {
+          role: "user",
+          content: `Based on this resume, provide a career growth roadmap:\n\n${resumeText}`,
+        },
+      ],
+      temperature: 0.5,
+      maxTokens: 3000,
+    });
+  } catch (error) {
+    throw new Error(getAIErrorMessage(error, "Roadmap generation failed"));
+  }
+};
+
