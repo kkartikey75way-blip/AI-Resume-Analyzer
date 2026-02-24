@@ -6,7 +6,7 @@ import ScoreGauge from '../components/ScoreGauge';
 import toast from 'react-hot-toast';
 import {
     ArrowLeft, AlertTriangle, CheckCircle, Info, ChevronDown, ChevronUp,
-    Target, Zap, Award, TrendingUp,
+    Target, Zap, Award, TrendingUp, Sparkles,
 } from 'lucide-react';
 
 interface Suggestion {
@@ -132,6 +132,9 @@ const AnalysisResult = () => {
                         })}
                     </p>
                 </div>
+                <button className="btn btn-primary" onClick={() => navigate(`/analysis/${id}/generated`)}>
+                    <Sparkles size={18} /> Generate Improved Resume
+                </button>
             </motion.div>
 
             {/* Score Overview */}
@@ -294,8 +297,8 @@ const AnalysisResult = () => {
                             <span
                                 key={i}
                                 className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[0.82rem] font-medium transition-all duration-150 hover:scale-105 ${kw.found
-                                        ? 'bg-[rgba(16,185,129,0.1)] text-accent-emerald border border-[rgba(16,185,129,0.2)]'
-                                        : 'bg-[rgba(244,63,94,0.08)] text-accent-rose border border-[rgba(244,63,94,0.15)]'
+                                    ? 'bg-[rgba(16,185,129,0.1)] text-accent-emerald border border-[rgba(16,185,129,0.2)]'
+                                    : 'bg-[rgba(244,63,94,0.08)] text-accent-rose border border-[rgba(244,63,94,0.15)]'
                                     } ${kw.relevance === 'high' ? 'font-bold' : ''}`}
                             >
                                 {kw.word}

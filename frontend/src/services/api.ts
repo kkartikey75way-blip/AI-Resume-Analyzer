@@ -41,6 +41,7 @@ export const resumeAPI = {
     getHistory: () => api.get('/resume/history'),
     getAnalysis: (id: string) => api.get(`/resume/${id}`),
     deleteAnalysis: (id: string) => api.delete(`/resume/${id}`),
+    generateResume: (id: string) => api.post(`/resume/${id}/generate`),
 };
 
 export default api;
